@@ -1,0 +1,18 @@
+from androguard.core.bytecodes.apk import APK
+
+def scan_apk(file_path):
+    try:
+        apk = APK(file_path)
+        print(f"App Name: {apk.get_app_name()}")
+        print(f"Package Name: {apk.get_package()}")
+        print(f"Permissions: {apk.get_permissions()}")
+        # Flag suspicious permissions
+        suspicious = ["SEND_SMS", "READ_SMS", "WRITE_SMS"]
+        for permission in apk.get_permissions():
+            if any(perm in permission for perm in suspicious):
+                print(f"⚠️ Suspicious permission detected: {permission}")
+    except Exception as e:
+        print(f"Error scanning APK file: {e}")
+
+# Example usage
+scan_apk("path_to_apk_file.apk")
